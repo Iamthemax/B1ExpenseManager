@@ -1,13 +1,15 @@
 package sumago.androidipt.b1expensemanager;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -16,30 +18,29 @@ import java.util.ArrayList;
 import sumago.androidipt.b1expensemanager.database.DbHelper;
 import sumago.androidipt.b1expensemanager.models.Expense;
 
-public class AddExpenseActivity extends AppCompatActivity {
+public class UpdateExpenseActivity extends AppCompatActivity {
     TextInputLayout txLayoutExpenseName;
     TextInputLayout txLayoutAmount;
     TextInputEditText etName;
     TextInputEditText etAmount;
     TextInputEditText etDate;
-    TextInputEditText etNotes;;
-    Button btnAdd;
-
+    TextInputEditText etNotes;
+    Button btnUpdate;
     DbHelper dbHelper;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_expense);
+        setContentView(R.layout.activity_update_expense);
         etName=findViewById(R.id.etName);
         etDate=findViewById(R.id.etDate);
         etAmount=findViewById(R.id.etAmount);
         etNotes=findViewById(R.id.etNote);
-        btnAdd=findViewById(R.id.btnAdd);
+        btnUpdate=findViewById(R.id.btnUpdate);
         txLayoutExpenseName=findViewById(R.id.txExpenseNameLayout);
         txLayoutAmount=findViewById(R.id.txAmountLayout);
         dbHelper=new DbHelper(this);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
+        setDetails(new Expense());
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(validateFields())
@@ -50,15 +51,18 @@ public class AddExpenseActivity extends AppCompatActivity {
                     String date=etDate.getText().toString();
                     String catName="Default";
                     int catId=1;
-                    long id=dbHelper.insertExpense(new Expense(name,catName,date,amount,catId,note));
-                    if(id>=1)
-                    {
-                        finish();
-                    }
                 }
             }
         });
     }
+
+    private void setDetails(Expense expense) {
+        etName.setText(expense.getName());
+        etAmount.setText(""+expense.getAmount());
+        etNotes.setText(expense.getNote());
+        etDate.setText(expense.getDate());
+    }
+
     private boolean validateFields() {
         ArrayList<Boolean> errors=new ArrayList<>();
 

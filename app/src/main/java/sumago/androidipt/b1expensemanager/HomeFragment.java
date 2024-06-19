@@ -5,6 +5,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +32,7 @@ public class HomeFragment extends Fragment {
     private String mParam2;
 
     Button button;
+    RecyclerView recyclerViewExpenseList;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -71,13 +75,9 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        button=view.findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Toast.makeText(getActivity(), "Clicked on Button", Toast.LENGTH_SHORT).show();
-            }
-        });
+        recyclerViewExpenseList=view.findViewById(R.id.recyclerViewExpenseList);
+        RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getActivity(),RecyclerView.VERTICAL,false);
+        recyclerViewExpenseList.setLayoutManager(layoutManager);
+        recyclerViewExpenseList.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL));
     }
 }
